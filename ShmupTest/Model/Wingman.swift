@@ -18,11 +18,13 @@ class Wingman: FrameUpdateProtocol {
             if oldValue == targetPosition {return}
             if let targetPosition = targetPosition {
                 shootHitSparkEmitter.position = targetPosition
-                DispatchQueue.main.asyncAfter(deadline:.now() + 0.3, execute: {
-                    self.shootHitSparkEmitter.particleBirthRate = 20
+                DispatchQueue.main.asyncAfter(deadline:.now() + 0.1, execute: {
+                    self.shootHitSparkEmitter.particleBirthRate = 200
                 })
             } else {
-                shootHitSparkEmitter.particleBirthRate = 0.0
+                DispatchQueue.main.asyncAfter(deadline:.now() + 0.1, execute: {
+                    self.shootHitSparkEmitter.particleBirthRate = 0.0
+                })
             }
         }
     }
@@ -34,6 +36,7 @@ class Wingman: FrameUpdateProtocol {
     private var bulletTrackList: [BulletTrack]
     private var shootHitSparkEmitter: SKEmitterNode!
     private var shootSparkNode = SKSpriteNode()
+    var thrustEmitter: SKEmitterNode!
     
     init(bulletTrackList: [BulletTrack], from mainShip: Ship, parentScene: SKScene) {
         self.bulletTrackList = bulletTrackList
@@ -52,8 +55,10 @@ class Wingman: FrameUpdateProtocol {
             guard let `self` = self else {return}
             self.shotSytem.parentRotation = self.shipNode.zRotation
             if self.targetPosition == nil && self.mainShip!.focusMode {
+                self.shootSparkNode.alpha = 0.0
                 return
             }
+            self.shootSparkNode.alpha = 1.0
             self.shotSytem.frameDidUpdate?(timeSinceLastUpdate, scene)
         }
     }
@@ -65,22 +70,27 @@ class Wingman: FrameUpdateProtocol {
         shootSparkNode.position = CGPoint(x: 0, y: 0)
         shipNode.addChild(shootSparkNode)
         shootSparkNode.alpha = 0.9
+        prepareThrustEmitter()
         animateSparkAnimation()
         prepareFocusShootHitSpark()
     }
     
-    func animateSparkAnimation() {
+    private func animateSparkAnimation() {
         shootSparkNode.run(SKAction.repeatForever(
             SKAction.animate(with: TextureManager.shared.shootSparkFrames, timePerFrame: 0.05, resize: false, restore: true)
         ))
     }
     
-    func prepareFocusShootHitSpark() {
-        let laserHitSparkPath = Bundle.main.path(forResource: "ShootHitSpark", ofType: "sks")!
-        shootHitSparkEmitter = NSKeyedUnarchiver.unarchiveObject(withFile: laserHitSparkPath)
-            as! SKEmitterNode
+    private func prepareFocusShootHitSpark() {
+        shootHitSparkEmitter = TextureManager.shared.getEmitter(named: "ShootHitSpark")
         shootHitSparkEmitter.targetNode = parentScene
         parentScene?.addChild(shootHitSparkEmitter)
         shootHitSparkEmitter.particleBirthRate = 0.0
+    }
+    
+    private func prepareThrustEmitter() {
+        thrustEmitter = TextureManager.shared.getEmitter(named: "WingmanThrust")
+        thrustEmitter.targetNode = parentScene
+        shipNode.addChild(thrustEmitter)
     }
 }

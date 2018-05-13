@@ -43,6 +43,11 @@ public extension SKNode {
     run(SKAction.sequence([SKAction.wait(forDuration: delay), SKAction.run(block)]))
   }
 
+    public func repeatForever(interval: TimeInterval, runBlock block: @escaping () -> Void) -> SKAction {
+        let action = SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: interval), SKAction.run(block)]))
+        return action
+    }
+    
   /**
    * Makes this node the frontmost node in its parent.
    */

@@ -11,6 +11,16 @@ import SceneKit
 
 class Ship: FrameUpdateProtocol {
     static let shared = Ship()
+    var shotPower: CGFloat {
+        return focusMode ?
+               WeaponSystemManager.shared.shotPowerFocused :
+               WeaponSystemManager.shared.shotPowerUnfocused
+    }
+    
+    var laserPower: CGFloat {
+        return WeaponSystemManager.shared.laserPower
+    }
+    
     var frameDidUpdate: ((CFTimeInterval, SKScene) -> Void)?
     var focusMode = false {
         didSet{
@@ -31,7 +41,7 @@ class Ship: FrameUpdateProtocol {
         )
     )
     
-    private let textureNode = SKSpriteNode(
+ let textureNode = SKSpriteNode(
         texture: TextureManager.shared.shipTexture
     )
 
@@ -53,13 +63,24 @@ class Ship: FrameUpdateProtocol {
     }
     
     private func initWeaponSystem() {
-        AmmoManager.shared.loadAmmo(capacity: 200)
-        shotSytem.prepareShot(for: shipNode, motherShip: nil, parentScene: parentScene!, bulletTrackList: WeaponSystemManager.shared.bulletTrackList)
+        AmmoManager.shared.loadAmmo(capacity: 2000)
+        shotSytem.prepareShot(for: shipNode,
+                              motherShip: nil,
+                              parentScene: parentScene!,
+                              bulletTrackList: WeaponSystemManager.shared.bulletTrackList)
         wingmanSqard.prepareWingman(for: self, parentScene: parentScene!)
         laserSystem.prepareLaser(for: self, parentScene: parentScene!)
         shotSytem.activate(true)
         laserSystem.activate(false)
         wingmanSqard.activate(true)
+        
+        laserSystem.laserDidHitTarget = {[weak self] enemy in
+            guard let `self` = self else {return}
+            enemy.takeHit(damage: self.laserPower)
+            enemy.didDie = {
+                self.targetPosition = nil
+            }
+        }
     }
     
     private func setupFrameUpdateBlock() {
@@ -76,7 +97,7 @@ class Ship: FrameUpdateProtocol {
         shotSytem.activate(!focusMode)
         laserSystem.activate(focusMode)
     }
-    
+
 }
 
 

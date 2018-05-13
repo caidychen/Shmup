@@ -8,8 +8,18 @@
 
 import SpriteKit
 
+struct BulletTrack {
+    var startPoint: NormalisedPoint
+    var rotation: CGFloat
+}
+
+
 class WeaponSystemManager {
     static let shared = WeaponSystemManager()
+    
+    let shotPowerUnfocused: CGFloat = 20
+    let shotPowerFocused: CGFloat = 1   // Multiplied by 6 wingmen
+    let laserPower: CGFloat = 50
     
     let bulletTrackList: [BulletTrack] = [
         BulletTrack(startPoint: NormalisedPoint(x: 0, y: 1), rotation: 0),

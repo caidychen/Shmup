@@ -10,9 +10,10 @@ import SpriteKit
 import SceneKit
 class LaserSystem: FrameUpdateProtocol {
     
-    var targetPosition: CGPoint?
+    var target: SKSpriteNode?
     var targetRange:CGFloat = 0.0
     var frameDidUpdate: ((CFTimeInterval, SKScene) -> Void)?
+    var laserDidHitTarget: ((EWKEnemy) -> Void)?
     
     private weak var motherShip: Ship?
     private weak var parentScene: SKScene?
@@ -21,6 +22,9 @@ class LaserSystem: FrameUpdateProtocol {
     private var laserSparkNode = SKSpriteNode()
     private var laserHitSpartNode = SKSpriteNode()
     private var laserHitSparkEmitter: SKEmitterNode!
+    private var laserHitSparkEmitter2: SKEmitterNode!
+    private var laserThrustEmitter: SKEmitterNode!
+    
     private var laserThickness: CGFloat = 350
     private var currentLaserRange: CGFloat = 0.0
     private var laserHitting = false {
@@ -57,9 +61,9 @@ class LaserSystem: FrameUpdateProtocol {
             guard let `self` = self else {return}
             if self.activated {
                 self.checkLineOfSight()
-                self.laserHitSpartNode.alpha = 1.0
-                if self.currentLaserRange < self.targetRange - 50 {
-                    self.currentLaserRange += 50
+                self.laserHitSpartNode.alpha = 0.2
+                if self.currentLaserRange < self.targetRange - 80 {
+                    self.currentLaserRange += 80
                 } else {
                     self.currentLaserRange = self.targetRange
                 }
@@ -82,36 +86,51 @@ class LaserSystem: FrameUpdateProtocol {
         if !state {
             currentLaserRange = 0
             targetRange = 0
-            targetPosition = nil
+            target = nil
             motherShip?.targetPosition = nil
             laserHitSparkEmitter.particleBirthRate = 0.0
+            laserHitSparkEmitter2.particleBirthRate = 0.0
+            laserThrustEmitter.particleBirthRate = 0.0
+            parentScene?.children.forEach({ (node) in
+                if node.name == Constants.SpriteName.lockTarget {
+                    node.name = ""
+                }
+            })
         } else {
-            laserHitSparkEmitter.particleBirthRate = 100.0
+            laserHitSparkEmitter.particleBirthRate = 500
+            laserHitSparkEmitter2.particleBirthRate = 1500
+            laserThrustEmitter.particleBirthRate = 1500
         }
     }
     
     func toggleLaserHitting(oldValue: Bool) {
-        if laserHitting == oldValue {return}
         if self.laserHitting {
-            self.laserHitSpartNode.run(SKAction.repeatForever(
-                SKAction.animate(with: TextureManager.shared.laserHitSparkFrames, timePerFrame: 0.05, resize: true, restore: true)
-            ))
-        } else {
-            self.laserHitSpartNode.run(SKAction.repeatForever(
-                SKAction.animate(with: [TextureManager.shared.laserHeadTexture], timePerFrame: 0.05, resize: true, restore: true)
-            ))
+            if let target = parentScene?.childNode(withName: Constants.SpriteName.lockTarget) as? EWKEnemy {
+                laserDidHitTarget?(target)
+            }
         }
+        if laserHitting == oldValue {return}
+        
+//        if self.laserHitting {
+//            self.laserHitSpartNode.run(SKAction.repeatForever(
+//                SKAction.animate(with: [TextureManager.shared.laserHeadTexture], timePerFrame: 0.05, resize: true, restore: true)
+//            ))
+//        } else {
+//            self.laserHitSpartNode.run(SKAction.repeatForever(
+//                SKAction.animate(with: [TextureManager.shared.laserHeadTexture], timePerFrame: 0.05, resize: true, restore: true)
+//            ))
+//        }
     }
     
     private func checkLineOfSight() {
         guard let parentScene = parentScene else {return}
         guard let motherShip = motherShip else {return}
         if let targetPoint = isTargetVisibleAtAngle(distance: parentScene.size.height) {
-            let range = targetPoint - motherShip.shipNode.position - CGPoint(x: 0, y: 20)
+            let range = targetPoint - motherShip.shipNode.position - CGPoint(x: 0, y: 60)
             targetRange = range.y
             if activated {
-                targetPosition = parentScene.childNode(withName: Constants.SpriteName.lockTarget)?.position
-                motherShip.targetPosition = targetPoint
+                target = parentScene.childNode(withName: Constants.SpriteName.lockTarget) as? SKSpriteNode
+                motherShip.targetPosition = target?.position
             }
         } else {
             targetRange = parentScene.size.height
@@ -121,18 +140,44 @@ class LaserSystem: FrameUpdateProtocol {
     private func isTargetVisibleAtAngle(distance: CGFloat) -> CGPoint? {
         guard let parentScene = parentScene else {return nil}
         guard let motherShip = motherShip else {return nil}
+        
         let rayStart = motherShip.shipNode.position
         let rayEnd = CGPoint(x: motherShip.shipNode.position.x,
                              y: motherShip.shipNode.position.y + distance)
+        
+        let rayStartLeft = motherShip.shipNode.position - CGPoint(x: laserNode.size.width/2, y: 0)
+        let rayStartRight = motherShip.shipNode.position + CGPoint(x: laserNode.size.width/2, y: 0)
+        let rayEndLeft = CGPoint(x: motherShip.shipNode.position.x,
+                                 y: motherShip.shipNode.position.y + distance) - CGPoint(x: laserNode.size.width/2, y: 0)
+        let rayEndRight = CGPoint(x: motherShip.shipNode.position.x,
+                                  y: motherShip.shipNode.position.y + distance) + CGPoint(x: laserNode.size.width/2, y: 0)
         var targetPoint: CGPoint? = nil
         
         parentScene.physicsWorld.enumerateBodies(alongRayStart: rayStart, end: rayEnd) { (body, point, vector, _) in
             if body.categoryBitMask == Constants.Collision.enemyHitCategory{
                 targetPoint = point
-                body.node?.name = Constants.SpriteName.lockTarget
+                if self.target == nil || (self.target == body.node) {
+                    body.node?.name = Constants.SpriteName.lockTarget
+                }
             }
         }
         
+        parentScene.physicsWorld.enumerateBodies(alongRayStart: rayStartLeft, end: rayEndLeft) { (body, point, vector, _) in
+            if body.categoryBitMask == Constants.Collision.enemyHitCategory{
+                targetPoint = point
+                if self.target == nil || (self.target == body.node) {
+                    body.node?.name = Constants.SpriteName.lockTarget
+                }
+            }
+        }
+        parentScene.physicsWorld.enumerateBodies(alongRayStart: rayStartRight, end: rayEndRight) { (body, point, vector, _) in
+            if body.categoryBitMask == Constants.Collision.enemyHitCategory{
+                targetPoint = point
+                if self.target == nil || (self.target == body.node) {
+                    body.node?.name = Constants.SpriteName.lockTarget
+                }
+            }
+        }
         return targetPoint
     }
     
@@ -155,22 +200,25 @@ class LaserSystem: FrameUpdateProtocol {
     // Hit point
     private func prepareLaserHitSparkAnimation() {
         guard let motherShip = motherShip else {return}
-        let firstSparkFrameTexture = TextureManager.shared.laserHitSparkFrames[0]
-        laserHitSpartNode = SKSpriteNode(texture: firstSparkFrameTexture)
+        
+        laserHitSpartNode = SKSpriteNode()
         laserHitSpartNode.zPosition = Constants.zPosition.player - 1
         motherShip.shipNode.addChild(laserHitSpartNode)
         laserHitSpartNode.xScale = 1.4
         laserHitSpartNode.yScale = 1.6
         laserHitSpartNode.alpha = 0.0
-        laserHitSpartNode.run(SKAction.repeatForever(
-            SKAction.animate(with: TextureManager.shared.laserHitSparkFrames, timePerFrame: 0.05, resize: true, restore: true)
-        ))
-        let laserHitSparkPath = Bundle.main.path(forResource: "LaserHitSpark", ofType: "sks")!
-        laserHitSparkEmitter = NSKeyedUnarchiver.unarchiveObject(withFile: laserHitSparkPath)
-            as! SKEmitterNode
-        laserHitSparkEmitter.targetNode = parentScene
+        
+        laserHitSparkEmitter = TextureManager.shared.getEmitter(named: "LaserSpark")
+        laserHitSparkEmitter2 = TextureManager.shared.getEmitter(named: "LaserHitSpark")
+        laserThrustEmitter = TextureManager.shared.getEmitter(named: "LaserThrust")
+        
         laserHitSparkEmitter.position = CGPoint(x: 0, y: 0)
         laserHitSpartNode.addChild(laserHitSparkEmitter)
-        laserHitSparkEmitter.particleBirthRate = 0.0
+        laserHitSparkEmitter2.targetNode = parentScene
+        laserHitSparkEmitter2.position = CGPoint(x: 0, y: 0)
+        laserHitSpartNode.addChild(laserHitSparkEmitter2)
+        
+        laserThrustEmitter.position = CGPoint(x: 0, y: 0)
+        laserSparkNode.addChild(laserThrustEmitter)
     }
 }

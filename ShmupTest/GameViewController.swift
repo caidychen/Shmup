@@ -26,6 +26,7 @@ class GameViewController: UIViewController {
         let skView = self.view as! SKView
         skView.isMultipleTouchEnabled = false
         skView.showsFPS = true
+        skView.preferredFramesPerSecond = 50
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
         scene.scaleMode = .aspectFill

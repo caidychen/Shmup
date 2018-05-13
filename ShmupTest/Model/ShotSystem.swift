@@ -10,7 +10,6 @@ import SpriteKit
 
 class ShotSystem: FrameUpdateProtocol {
     
-    
     var frameDidUpdate: ((CFTimeInterval, SKScene) -> Void)?
     var parentRotation: CGFloat?
     
@@ -72,6 +71,9 @@ class ShotSystem: FrameUpdateProtocol {
         }
         bullet.position = mainShipPosition + baseNode.position + baseNode.convertPosition(from: bulletTrack.startPoint) + CGPoint(x: -tan(bullet.zRotation) * 50, y: 50)
         bullet.zPosition = Constants.zPosition.playerWeapon
+        if bullet.parent != nil {
+            bullet.removeFromParent()
+        }
         parentScene.addChild(bullet)
         let vector = CGVector(dx: -tan(bullet.zRotation) * range, dy: range)
         let shootAction = SKAction.move(by: vector, duration: bulletTravelDuration)

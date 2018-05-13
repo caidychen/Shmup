@@ -15,13 +15,20 @@ struct PlayerBullet {
 
 class AmmoManager {
     static let shared = AmmoManager()
-    var magazine: [SKSpriteNode] = []
+    var magazine: [SKSpriteNode] = [] {
+        didSet{
+            if magazine.count <= 100 {
+                loadAmmo(capacity: 2000)
+            }
+        }
+    }
 
     func loadAmmo(capacity: Int) {
-        magazine.removeAll()
+        var magazine: [SKSpriteNode] = []
         for _ in 0..<capacity {
             magazine.append(SKSpriteNode(imageNamed: "bullet.png"))
         }
+        self.magazine = magazine
     }
     
 }

@@ -15,9 +15,9 @@ class TextureManager {
     private(set) var shootSparkFrames: [SKTexture] = []
     private(set) var laserSparkFrames: [SKTexture] = []
     private(set) var laserHitSparkFrames: [SKTexture] = []
+    private(set) var explosionPop: [SKTexture] = []
     
     func prepareTextures() {
-        
         let shootSparkAtlas = SKTextureAtlas(named: "shootSpark")
         shootSparkFrames = shootSparkAtlas.textureNames.map({ (name) -> SKTexture in
             return shootSparkAtlas.textureNamed(name)
@@ -32,6 +32,16 @@ class TextureManager {
         laserHitSparkFrames = laserHitSparkAtlas.textureNames.map({ (name) -> SKTexture in
             return laserHitSparkAtlas.textureNamed(name)
         })
+        
+        let explosionPopAtlas = SKTextureAtlas(named: "explosion1")
+        explosionPop = explosionPopAtlas.textureNames.sorted{$0 < $1}.map({ (name) -> SKTexture in
+            return explosionPopAtlas.textureNamed(name)
+        })
     }
     
+    func getEmitter(named: String) -> SKEmitterNode {
+        let filePath = Bundle.main.path(forResource: named, ofType: "sks")!
+        return NSKeyedUnarchiver.unarchiveObject(withFile: filePath)
+            as! SKEmitterNode
+    }
 }

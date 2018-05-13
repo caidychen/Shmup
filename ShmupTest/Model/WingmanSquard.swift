@@ -40,8 +40,8 @@ class WingmanSquard: FrameUpdateProtocol {
         }
         frameDidUpdate = {[weak self] (timeSinceLastUpdate, scene) in
             guard let `self` = self else {return}
-            self.updateAllWingmanRotation()
             self.wingmans.forEach{$0.frameDidUpdate?(timeSinceLastUpdate, scene)}
+            self.updateAllWingmanRotation()
         }
     }
     
@@ -67,29 +67,24 @@ class WingmanSquard: FrameUpdateProtocol {
     private func updateWingmanRotation(wingman: Wingman, index: Int) {
         guard let motherShip = motherShip else {return}
         let position = motherShip.shipNode.position + wingman.shipNode.position
+//        wingman.thrustEmitter.targetNode = parentScene
         if motherShip.focusMode {
             if let targetPosition = targetPosition {
                 let moveAction = SKAction.move(
                     to: motherShip.shipNode.convertPosition(from: linkPositionFocused[index]),
                     duration: modeChangeDuration
                 )
-                let rotateAction = SKAction.rotate(
-                    toAngle: -atan2(targetPosition.x - position.x, targetPosition.y - position.y),
-                    duration: 0.01
-                )
+        
                 wingman.shipNode.run(moveAction)
-                wingman.shipNode.run(rotateAction)
+                wingman.shipNode.zRotation = -atan2(targetPosition.x - position.x, targetPosition.y - position.y)
             } else {
                 let moveAction = SKAction.move(
                     to: motherShip.shipNode.convertPosition(from: linkPositionFocused[index]),
                     duration: modeChangeDuration
                 )
-                let rotateAction = SKAction.rotate(
-                    toAngle: 0,
-                    duration: modeChangeDuration
-                )
+
                 wingman.shipNode.run(moveAction)
-                wingman.shipNode.run(rotateAction)
+                wingman.shipNode.zRotation = 0
             }
         } else {
             let moveAction = SKAction.move(
@@ -103,6 +98,8 @@ class WingmanSquard: FrameUpdateProtocol {
             wingman.shipNode.run(moveAction)
             wingman.shipNode.run(rotateAction)
         }
-        
+//        parentScene?.afterDelay(modeChangeDuration, runBlock: {
+//            wingman.thrustEmitter.targetNode = wingman.shipNode
+//        })
     }
 }
