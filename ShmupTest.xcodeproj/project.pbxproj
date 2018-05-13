@@ -43,6 +43,9 @@
 		C65E7F8920A7BB7900231EF0 /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E7F7D20A7BB7100231EF0 /* Vector3.swift */; };
 		C65E7F8B20A7C72400231EF0 /* WingmanSquard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E7F8A20A7C72400231EF0 /* WingmanSquard.swift */; };
 		C65E7F8D20A7CE1200231EF0 /* LaserSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E7F8C20A7CE1200231EF0 /* LaserSystem.swift */; };
+		C65E7F8F20A7DC9E00231EF0 /* WeaponSystemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E7F8E20A7DC9E00231EF0 /* WeaponSystemManager.swift */; };
+		C65E7F9120A7DD0A00231EF0 /* ShotSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E7F9020A7DD0A00231EF0 /* ShotSystem.swift */; };
+		C65E7F9320A7E83E00231EF0 /* FrameUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E7F9220A7E83E00231EF0 /* FrameUpdateProtocol.swift */; };
 		C66FEA29209EEC9B00DAEF12 /* bullet.png in Resources */ = {isa = PBXBuildFile; fileRef = C66FEA27209EEC8200DAEF12 /* bullet.png */; };
 		C66FEA2A209EEC9B00DAEF12 /* shooter.png in Resources */ = {isa = PBXBuildFile; fileRef = C66FEA28209EEC8200DAEF12 /* shooter.png */; };
 		C66FEA2B209EEC9B00DAEF12 /* wingman.png in Resources */ = {isa = PBXBuildFile; fileRef = C66FEA26209EEC8200DAEF12 /* wingman.png */; };
@@ -89,6 +92,9 @@
 		C65E7F7D20A7BB7100231EF0 /* Vector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector3.swift; sourceTree = "<group>"; };
 		C65E7F8A20A7C72400231EF0 /* WingmanSquard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingmanSquard.swift; sourceTree = "<group>"; };
 		C65E7F8C20A7CE1200231EF0 /* LaserSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaserSystem.swift; sourceTree = "<group>"; };
+		C65E7F8E20A7DC9E00231EF0 /* WeaponSystemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeaponSystemManager.swift; sourceTree = "<group>"; };
+		C65E7F9020A7DD0A00231EF0 /* ShotSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShotSystem.swift; sourceTree = "<group>"; };
+		C65E7F9220A7E83E00231EF0 /* FrameUpdateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameUpdateProtocol.swift; sourceTree = "<group>"; };
 		C66FEA26209EEC8200DAEF12 /* wingman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wingman.png; sourceTree = "<group>"; };
 		C66FEA27209EEC8200DAEF12 /* bullet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet.png; sourceTree = "<group>"; };
 		C66FEA28209EEC8200DAEF12 /* shooter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shooter.png; sourceTree = "<group>"; };
@@ -121,6 +127,7 @@
 			children = (
 				C65E7F7120A7BB7100231EF0 /* SKTUtils */,
 				C66FEA2D209EF8A100DAEF12 /* AmmoManager.swift */,
+				C65E7F8E20A7DC9E00231EF0 /* WeaponSystemManager.swift */,
 				C643849920A1AF7D0008DACE /* TextureManager.swift */,
 				C61D4135209DF6B6000636FB /* SKNodeExtension.swift */,
 			);
@@ -132,10 +139,12 @@
 			children = (
 				C65E7F6F20A7BB5E00231EF0 /* EWKEnemy.swift */,
 				C656A35C209D83AA007DD8DE /* Ship.swift */,
+				C65E7F9020A7DD0A00231EF0 /* ShotSystem.swift */,
 				C65E7F8C20A7CE1200231EF0 /* LaserSystem.swift */,
 				C65E7F8A20A7C72400231EF0 /* WingmanSquard.swift */,
 				C61D4131209DE781000636FB /* Wingman.swift */,
 				C61D4133209DE824000636FB /* Shootable.swift */,
+				C65E7F9220A7E83E00231EF0 /* FrameUpdateProtocol.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -314,10 +323,13 @@
 				C65E7F7E20A7BB7900231EF0 /* CGFloat+Extensions.swift in Sources */,
 				C656A35F209D866B007DD8DE /* BaseGameScene.swift in Sources */,
 				C65E7F7020A7BB5E00231EF0 /* EWKEnemy.swift in Sources */,
+				C65E7F9120A7DD0A00231EF0 /* ShotSystem.swift in Sources */,
 				C61D4132209DE781000636FB /* Wingman.swift in Sources */,
+				C65E7F8F20A7DC9E00231EF0 /* WeaponSystemManager.swift in Sources */,
 				C61D4136209DF6B6000636FB /* SKNodeExtension.swift in Sources */,
 				C65E7F8220A7BB7900231EF0 /* SKAction+Extensions.swift in Sources */,
 				C61D4134209DE824000636FB /* Shootable.swift in Sources */,
+				C65E7F9320A7E83E00231EF0 /* FrameUpdateProtocol.swift in Sources */,
 				C65E7F8920A7BB7900231EF0 /* Vector3.swift in Sources */,
 				C656A35D209D83AA007DD8DE /* Ship.swift in Sources */,
 				C65E7F8720A7BB7900231EF0 /* SKTEffects.swift in Sources */,

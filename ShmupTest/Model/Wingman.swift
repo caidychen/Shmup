@@ -9,12 +9,10 @@
 import SpriteKit
 import SceneKit
 
-class Wingman: Shootable {
-    var bulletTrackList: [BulletTrack]
-    var shipNode = SKSpriteNode(imageNamed: "wingman.png")
+class Wingman: FrameUpdateProtocol {
+    
+    let shipNode = SKSpriteNode(imageNamed: "wingman.png")
     var frameDidUpdate: ((CFTimeInterval, SKScene) -> Void)?
-    var shootHitSparkEmitter: SKEmitterNode!
-    weak var parentScene: SKScene?
     var targetPosition: CGPoint?{
         didSet {
             if oldValue == targetPosition {return}
@@ -28,32 +26,35 @@ class Wingman: Shootable {
             }
         }
     }
+    
+    
+    weak var parentScene: SKScene?
+    weak private var mainShip: Ship?
+    private let shotSytem = ShotSystem()
+    private var bulletTrackList: [BulletTrack]
+    private var shootHitSparkEmitter: SKEmitterNode!
     private var shootSparkNode = SKSpriteNode()
     
-    weak private var mainShip: Ship?
-    private var timeSinceLastBulletShoot: CFTimeInterval = 0
-    
-    
-    init(bulletTrackList: [BulletTrack], from mainShip: Ship) {
+    init(bulletTrackList: [BulletTrack], from mainShip: Ship, parentScene: SKScene) {
         self.bulletTrackList = bulletTrackList
         self.mainShip = mainShip
+        self.parentScene = parentScene
+        
     }
     
-    func prepareShoot() {
+    func activate(_ state: Bool) {
+        shotSytem.activate(state)
+    }
+    
+    func prepare() {
+        shotSytem.prepareShot(for: self.shipNode, motherShip: mainShip!, parentScene: parentScene!, bulletTrackList: bulletTrackList)
         frameDidUpdate = {[weak self] (timeSinceLastUpdate, scene) in
             guard let `self` = self else {return}
-            guard let mainShip = self.mainShip else {return}
-            self.timeSinceLastBulletShoot += timeSinceLastUpdate
-            if self.timeSinceLastBulletShoot > bulletReloadTime {
-                self.timeSinceLastBulletShoot = 0
-                if mainShip.focusMode && self.targetPosition == nil {
-                    return
-                }
-                for bulletTrack in self.bulletTrackList {
-                    self.shoot(parentNode: scene, range: scene.size.height, from: bulletTrack, from: mainShip.shipNode.position, parentRotation: self.shipNode.zRotation)
-                }
-                
+            self.shotSytem.parentRotation = self.shipNode.zRotation
+            if self.targetPosition == nil && self.mainShip!.focusMode {
+                return
             }
+            self.shotSytem.frameDidUpdate?(timeSinceLastUpdate, scene)
         }
     }
     

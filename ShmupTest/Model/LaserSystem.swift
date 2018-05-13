@@ -8,11 +8,14 @@
 
 import SpriteKit
 import SceneKit
-class LaserSystem {
- 
+class LaserSystem: FrameUpdateProtocol {
+    
+    var targetPosition: CGPoint?
+    var targetRange:CGFloat = 0.0
+    var frameDidUpdate: ((CFTimeInterval, SKScene) -> Void)?
+    
     private weak var motherShip: Ship?
     private weak var parentScene: SKScene?
-    
     private var activated = false
     private var laserNode: SKSpriteNode!
     private var laserSparkNode = SKSpriteNode()
@@ -20,18 +23,13 @@ class LaserSystem {
     private var laserHitSparkEmitter: SKEmitterNode!
     private var laserThickness: CGFloat = 350
     private var currentLaserRange: CGFloat = 0.0
-    var targetRange:CGFloat = 0.0
-    var frameDidUpdate: ((CFTimeInterval, SKScene) -> Void)?
-    
-    var targetPosition: CGPoint?
-    
     private var laserHitting = false {
         didSet{
             toggleLaserHitting(oldValue: oldValue)
         }
     }
     
-    func prepareLaser(motherShip: Ship, parentScene: SKScene) {
+    func prepareLaser(for motherShip: Ship, parentScene: SKScene) {
         self.motherShip = motherShip
         self.parentScene = parentScene
         let cropNode = SKCropNode()
@@ -58,6 +56,7 @@ class LaserSystem {
         frameDidUpdate = {[weak self] (timeSinceLastUpdate, scene) in
             guard let `self` = self else {return}
             if self.activated {
+                self.checkLineOfSight()
                 self.laserHitSpartNode.alpha = 1.0
                 if self.currentLaserRange < self.targetRange - 50 {
                     self.currentLaserRange += 50
@@ -84,6 +83,7 @@ class LaserSystem {
             currentLaserRange = 0
             targetRange = 0
             targetPosition = nil
+            motherShip?.targetPosition = nil
             laserHitSparkEmitter.particleBirthRate = 0.0
         } else {
             laserHitSparkEmitter.particleBirthRate = 100.0
@@ -101,6 +101,39 @@ class LaserSystem {
                 SKAction.animate(with: [TextureManager.shared.laserHeadTexture], timePerFrame: 0.05, resize: true, restore: true)
             ))
         }
+    }
+    
+    private func checkLineOfSight() {
+        guard let parentScene = parentScene else {return}
+        guard let motherShip = motherShip else {return}
+        if let targetPoint = isTargetVisibleAtAngle(distance: parentScene.size.height) {
+            let range = targetPoint - motherShip.shipNode.position - CGPoint(x: 0, y: 20)
+            targetRange = range.y
+            if activated {
+                targetPosition = parentScene.childNode(withName: Constants.SpriteName.lockTarget)?.position
+                motherShip.targetPosition = targetPoint
+            }
+        } else {
+            targetRange = parentScene.size.height
+        }
+    }
+    
+    private func isTargetVisibleAtAngle(distance: CGFloat) -> CGPoint? {
+        guard let parentScene = parentScene else {return nil}
+        guard let motherShip = motherShip else {return nil}
+        let rayStart = motherShip.shipNode.position
+        let rayEnd = CGPoint(x: motherShip.shipNode.position.x,
+                             y: motherShip.shipNode.position.y + distance)
+        var targetPoint: CGPoint? = nil
+        
+        parentScene.physicsWorld.enumerateBodies(alongRayStart: rayStart, end: rayEnd) { (body, point, vector, _) in
+            if body.categoryBitMask == Constants.Collision.enemyHitCategory{
+                targetPoint = point
+                body.node?.name = Constants.SpriteName.lockTarget
+            }
+        }
+        
+        return targetPoint
     }
     
     // Starting point
