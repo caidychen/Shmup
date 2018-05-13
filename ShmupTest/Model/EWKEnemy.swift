@@ -34,7 +34,6 @@ class EWKEnemy: SKSpriteNode, FrameUpdateProtocol {
     
     private func die() {
         ExplosionAnimator.playExplosion(on: parentScene!, position: self.position, scale: 1.0)
-        removeAllActions()
         removeFromParent()
         didDie?()
     }
@@ -59,6 +58,7 @@ class EWKEnemy: SKSpriteNode, FrameUpdateProtocol {
     func follow(target: SKSpriteNode, speed: CGFloat) {
         self.target = target
         chasing = true
+        self.movement = CGVector(point: target.position - self.position)
         frameDidUpdate = {[weak self](time, scene) in
             guard let `self` = self else {return}
             self.timeSinceLastMove += time

@@ -92,8 +92,9 @@ class LaserSystem: FrameUpdateProtocol {
             laserHitSparkEmitter2.particleBirthRate = 0.0
             laserThrustEmitter.particleBirthRate = 0.0
             parentScene?.children.forEach({ (node) in
-                if node.name == Constants.SpriteName.lockTarget {
-                    node.name = ""
+                let name = node.name ?? ""
+                if name.contains(Constants.SpriteName.lockTarget) {
+                    node.name? = String(name.dropLast(Constants.SpriteName.lockTarget.count))
                 }
             })
         } else {
@@ -105,7 +106,7 @@ class LaserSystem: FrameUpdateProtocol {
     
     func toggleLaserHitting(oldValue: Bool) {
         if self.laserHitting {
-            if let target = parentScene?.childNode(withName: Constants.SpriteName.lockTarget) as? EWKEnemy {
+            if let target = getTargetLockEnemy() {
                 laserDidHitTarget?(target)
             }
         }
@@ -122,6 +123,11 @@ class LaserSystem: FrameUpdateProtocol {
 //        }
     }
     
+    private func getTargetLockEnemy() -> EWKEnemy? {
+        guard let parentScene = parentScene else {return nil}
+        return parentScene.children.first{($0.name ?? "").contains(Constants.SpriteName.lockTarget)} as? EWKEnemy
+    }
+    
     private func checkLineOfSight() {
         guard let parentScene = parentScene else {return}
         guard let motherShip = motherShip else {return}
@@ -129,7 +135,7 @@ class LaserSystem: FrameUpdateProtocol {
             let range = targetPoint - motherShip.shipNode.position - CGPoint(x: 0, y: 60)
             targetRange = range.y
             if activated {
-                target = parentScene.childNode(withName: Constants.SpriteName.lockTarget) as? SKSpriteNode
+                target = getTargetLockEnemy()
                 motherShip.targetPosition = target?.position
             }
         } else {
@@ -157,7 +163,9 @@ class LaserSystem: FrameUpdateProtocol {
             if body.categoryBitMask == Constants.Collision.enemyHitCategory{
                 targetPoint = point
                 if self.target == nil || (self.target == body.node) {
-                    body.node?.name = Constants.SpriteName.lockTarget
+                    if !(body.node?.name ?? "").contains(Constants.SpriteName.lockTarget) {
+                        body.node?.name = (body.node?.name ?? "") + Constants.SpriteName.lockTarget
+                    }
                 }
             }
         }
@@ -166,7 +174,9 @@ class LaserSystem: FrameUpdateProtocol {
             if body.categoryBitMask == Constants.Collision.enemyHitCategory{
                 targetPoint = point
                 if self.target == nil || (self.target == body.node) {
-                    body.node?.name = Constants.SpriteName.lockTarget
+                    if !(body.node?.name ?? "").contains(Constants.SpriteName.lockTarget) {
+                        body.node?.name = (body.node?.name ?? "") + Constants.SpriteName.lockTarget
+                    }
                 }
             }
         }
@@ -174,7 +184,9 @@ class LaserSystem: FrameUpdateProtocol {
             if body.categoryBitMask == Constants.Collision.enemyHitCategory{
                 targetPoint = point
                 if self.target == nil || (self.target == body.node) {
-                    body.node?.name = Constants.SpriteName.lockTarget
+                    if !(body.node?.name ?? "").contains(Constants.SpriteName.lockTarget) {
+                        body.node?.name = (body.node?.name ?? "") + Constants.SpriteName.lockTarget
+                    }
                 }
             }
         }

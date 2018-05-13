@@ -32,7 +32,7 @@ class GameScene: BaseGameScene {
         didUpdateWIthTimeSinceLastUpdate = {[weak self] time, scene in
             guard let `self` = self else {return}
             self.ship.frameDidUpdate?(time, scene)
-            if let allBasicEnemies = (self.children.filter{$0.name == "Basic"}) as? [EWKEnemy] {
+            if let allBasicEnemies = (self.children.filter{$0.name?.contains("Basic") ?? false }) as? [EWKEnemy] {
                 allBasicEnemies.forEach({ (enemy) in
                     enemy.frameDidUpdate?(time, scene)
                 })
@@ -40,7 +40,7 @@ class GameScene: BaseGameScene {
             
         }
     }
-    
+
     func loadEnemy() {
         let enemy = EWKEnemy(imageNamed: "Spaceship.jpg")
         enemy.name = "Basic"
