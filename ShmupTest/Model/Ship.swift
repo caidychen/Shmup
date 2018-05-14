@@ -45,9 +45,9 @@ class Ship: FrameUpdateProtocol {
         texture: TextureManager.shared.shipTexture
     )
 
-    private let shotSytem = ShotSystem()
-    private let laserSystem = LaserSystem()
-    private let wingmanSqard = WingmanSquard()
+    let shotSytem = ShotSystem()
+    let laserSystem = LaserSystem()
+    let wingmanSqard = WingmanSquard()
     
     private var parentSceneSize: CGSize = .zero
     weak private var parentScene: SKScene?

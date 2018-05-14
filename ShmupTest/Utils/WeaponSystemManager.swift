@@ -8,6 +8,11 @@
 
 import SpriteKit
 
+let bulletReloadTime: CFTimeInterval = 0.06
+let bulletTravelDuration: CFTimeInterval = 0.4
+let laserTravelDuration: CFTimeInterval = 0.4
+let modeChangeDuration: CFTimeInterval = 0.1
+
 struct BulletTrack {
     var startPoint: NormalisedPoint
     var rotation: CGFloat

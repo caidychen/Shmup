@@ -27,8 +27,9 @@ class GameScene: BaseGameScene {
             }
             self.run(action, withKey: "Enemy")
         }
-        
-//        loadEnemy()
+
+        loadEnemy()
+//        setupDummy()
         didUpdateWIthTimeSinceLastUpdate = {[weak self] time, scene in
             guard let `self` = self else {return}
             self.ship.frameDidUpdate?(time, scene)
@@ -45,15 +46,27 @@ class GameScene: BaseGameScene {
         let enemy = EWKEnemy(imageNamed: "Spaceship.jpg")
         enemy.name = "Basic"
         enemy.parentScene = self
-        enemy.vitality = 100
+        enemy.vitality = 50
         enemy.physicsBody = SKPhysicsBody(rectangleOf: enemy.size)
         enemy.physicsBody?.categoryBitMask = Constants.Collision.enemyHitCategory
         enemy.physicsBody?.collisionBitMask = 0
         enemy.position = CGPoint(x: CGFloat(arc4random_uniform(UInt32(size.width))), y: size.height + enemy.size.height/2)
-
-//        enemy.position = CGPoint(x: size.width / 2, y: size.height + enemy.size.height/2)
         enemy.delayCollisionHit()
         enemy.follow(target: ship.shipNode, speed: 700)
+        addChild(enemy)
+    }
+    
+    func setupDummy() {
+        let enemy = EWKEnemy(imageNamed: "Spaceship.jpg")
+        enemy.size = CGSize(width: 400, height: 400)
+        enemy.name = "Basic"
+        enemy.parentScene = self
+        enemy.invulnerable = true
+        enemy.vitality = 50
+        enemy.physicsBody = SKPhysicsBody(texture: enemy.texture!, size: enemy.size)
+        enemy.physicsBody?.categoryBitMask = Constants.Collision.enemyHitCategory
+        enemy.physicsBody?.collisionBitMask = 0
+        enemy.position = CGPoint(x: size.width / 2, y: size.height - 400)
         addChild(enemy)
     }
     

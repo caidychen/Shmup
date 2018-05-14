@@ -42,7 +42,7 @@ class LaserSystem: FrameUpdateProtocol {
         laserNode = cropNode.maskNode as! SKSpriteNode
         
         for i in 0 ... 2 {
-            let background = SKSpriteNode(texture: SKTexture(imageNamed: "laser.png"), size: CGSize(width: laserThickness, height: parentScene.size.height))
+            let background = SKSpriteNode(texture: SKTexture(imageNamed: "laser.png"), size: CGSize(width: laserThickness * 1.5, height: parentScene.size.height))
             background.position = CGPoint(x: 0, y: (-background.size.height * CGFloat(i)) + CGFloat(1 * i))
             cropNode.addChild(background)
             let moveUp = SKAction.moveBy(x: 0, y: background.size.height , duration: laserTravelDuration)
@@ -61,7 +61,7 @@ class LaserSystem: FrameUpdateProtocol {
             guard let `self` = self else {return}
             if self.activated {
                 self.checkLineOfSight()
-                self.laserHitSpartNode.alpha = 0.2
+                self.laserHitSpartNode.alpha = 0.6
                 if self.currentLaserRange < self.targetRange - 80 {
                     self.currentLaserRange += 80
                 } else {
@@ -98,8 +98,8 @@ class LaserSystem: FrameUpdateProtocol {
                 }
             })
         } else {
-            laserHitSparkEmitter.particleBirthRate = 500
-            laserHitSparkEmitter2.particleBirthRate = 1500
+            laserHitSparkEmitter.particleBirthRate = 100
+            laserHitSparkEmitter2.particleBirthRate = 2500
             laserThrustEmitter.particleBirthRate = 1500
         }
     }
@@ -112,15 +112,15 @@ class LaserSystem: FrameUpdateProtocol {
         }
         if laserHitting == oldValue {return}
         
-//        if self.laserHitting {
-//            self.laserHitSpartNode.run(SKAction.repeatForever(
-//                SKAction.animate(with: [TextureManager.shared.laserHeadTexture], timePerFrame: 0.05, resize: true, restore: true)
-//            ))
-//        } else {
-//            self.laserHitSpartNode.run(SKAction.repeatForever(
-//                SKAction.animate(with: [TextureManager.shared.laserHeadTexture], timePerFrame: 0.05, resize: true, restore: true)
-//            ))
-//        }
+        if self.laserHitting {
+            self.laserHitSpartNode.run(SKAction.repeatForever(
+                SKAction.animate(with: TextureManager.shared.laserHitSparkFrames, timePerFrame: 0.01, resize: true, restore: true)
+            ))
+        } else {
+            self.laserHitSpartNode.run(SKAction.repeatForever(
+                SKAction.animate(with: [TextureManager.shared.laserHeadTexture], timePerFrame: 0.05, resize: true, restore: true)
+            ))
+        }
     }
     
     private func getTargetLockEnemy() -> EWKEnemy? {
@@ -132,10 +132,11 @@ class LaserSystem: FrameUpdateProtocol {
         guard let parentScene = parentScene else {return}
         guard let motherShip = motherShip else {return}
         if let targetPoint = isTargetVisibleAtAngle(distance: parentScene.size.height) {
-            let range = targetPoint - motherShip.shipNode.position - CGPoint(x: 0, y: 60)
+            let lockedTarget = getTargetLockEnemy()
+            let range = targetPoint - motherShip.shipNode.position - CGPoint(x: 0, y: (lockedTarget?.size.height ?? 0)/10)
             targetRange = range.y
             if activated {
-                target = getTargetLockEnemy()
+                target = lockedTarget
                 motherShip.targetPosition = target?.position
             }
         } else {
@@ -198,10 +199,11 @@ class LaserSystem: FrameUpdateProtocol {
         guard let motherShip = motherShip else {return}
         let firstSparkFrameTexture = TextureManager.shared.laserSparkFrames[0]
         laserSparkNode = SKSpriteNode(texture: firstSparkFrameTexture)
+        laserSparkNode.anchorPoint = CGPoint(x: 0.5, y: 0.75)
         laserSparkNode.position = motherShip.shipNode.convertPosition(from: NormalisedPoint(x: 0, y: 1))
         laserSparkNode.zPosition = Constants.zPosition.player - 1
-        laserSparkNode.xScale = 1.7
-        laserSparkNode.yScale = 1.4
+        laserSparkNode.xScale = 2.0
+        laserSparkNode.yScale = 2.8
         motherShip.shipNode.addChild(laserSparkNode)
         laserSparkNode.alpha = 0.0
         laserSparkNode.run(SKAction.repeatForever(
@@ -216,8 +218,9 @@ class LaserSystem: FrameUpdateProtocol {
         laserHitSpartNode = SKSpriteNode()
         laserHitSpartNode.zPosition = Constants.zPosition.player - 1
         motherShip.shipNode.addChild(laserHitSpartNode)
-        laserHitSpartNode.xScale = 1.4
-        laserHitSpartNode.yScale = 1.6
+        laserHitSpartNode.anchorPoint = CGPoint(x: 0.5, y: 0.7)
+        laserHitSpartNode.xScale = 1.25
+        laserHitSpartNode.yScale = 1.4
         laserHitSpartNode.alpha = 0.0
         
         laserHitSparkEmitter = TextureManager.shared.getEmitter(named: "LaserSpark")

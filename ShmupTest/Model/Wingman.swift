@@ -17,9 +17,9 @@ class Wingman: FrameUpdateProtocol {
         didSet {
             if oldValue == targetPosition {return}
             if let targetPosition = targetPosition {
-                shootHitSparkEmitter.position = targetPosition
+                shootHitSparkEmitter.position = targetPosition - CGPoint(x: 0, y: 80)
                 DispatchQueue.main.asyncAfter(deadline:.now() + 0.1, execute: {
-                    self.shootHitSparkEmitter.particleBirthRate = 200
+                    self.shootHitSparkEmitter.particleBirthRate = 100
                 })
             } else {
                 DispatchQueue.main.asyncAfter(deadline:.now() + 0.1, execute: {
@@ -83,9 +83,9 @@ class Wingman: FrameUpdateProtocol {
     
     private func prepareFocusShootHitSpark() {
         shootHitSparkEmitter = TextureManager.shared.getEmitter(named: "ShootHitSpark")
-        shootHitSparkEmitter.targetNode = parentScene
         parentScene?.addChild(shootHitSparkEmitter)
         shootHitSparkEmitter.particleBirthRate = 0.0
+        shootHitSparkEmitter.zPosition = Constants.zPosition.playerWeapon + 1
     }
     
     private func prepareThrustEmitter() {

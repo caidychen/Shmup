@@ -8,10 +8,7 @@
 
 import UIKit
 
-let bulletReloadTime: CFTimeInterval = 0.05
-let bulletTravelDuration: CFTimeInterval = 0.2
-let laserTravelDuration: CFTimeInterval = 0.4
-let modeChangeDuration: CFTimeInterval = 0.1
+
 
 struct Constants {
     struct SpriteName {

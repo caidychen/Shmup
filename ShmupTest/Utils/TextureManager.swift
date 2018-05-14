@@ -28,7 +28,7 @@ class TextureManager {
             return laserSparkAtlas.textureNamed(name)
         })
         
-        let laserHitSparkAtlas = SKTextureAtlas(named: "laserHitSpark")
+        let laserHitSparkAtlas = SKTextureAtlas(named: "laserHead")
         laserHitSparkFrames = laserHitSparkAtlas.textureNames.map({ (name) -> SKTexture in
             return laserHitSparkAtlas.textureNamed(name)
         })

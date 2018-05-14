@@ -51,6 +51,9 @@
 		C66FEA2B209EEC9B00DAEF12 /* wingman.png in Resources */ = {isa = PBXBuildFile; fileRef = C66FEA26209EEC8200DAEF12 /* wingman.png */; };
 		C66FEA2E209EF8A100DAEF12 /* AmmoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66FEA2D209EF8A100DAEF12 /* AmmoManager.swift */; };
 		C66FEA30209F127700DAEF12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66FEA2F209F127700DAEF12 /* Constants.swift */; };
+		C676FCA120A998E800FA53E4 /* laserHead.atlas in Resources */ = {isa = PBXBuildFile; fileRef = C676FCA020A998E300FA53E4 /* laserHead.atlas */; };
+		C676FCA320A9B5FB00FA53E4 /* bullet2.png in Resources */ = {isa = PBXBuildFile; fileRef = C676FCA220A9B5FA00FA53E4 /* bullet2.png */; };
+		C676FCA520A9B73D00FA53E4 /* SKAction+Chainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676FCA420A9B73D00FA53E4 /* SKAction+Chainable.swift */; };
 		C6F3306820A828C200A6B96F /* LaserSpark.sks in Resources */ = {isa = PBXBuildFile; fileRef = C6F3306720A828C200A6B96F /* LaserSpark.sks */; };
 		C6F3306A20A83E4000A6B96F /* WingmanThrust.sks in Resources */ = {isa = PBXBuildFile; fileRef = C6F3306920A83E4000A6B96F /* WingmanThrust.sks */; };
 		C6F3306C20A8449100A6B96F /* LaserThrust.sks in Resources */ = {isa = PBXBuildFile; fileRef = C6F3306B20A8449100A6B96F /* LaserThrust.sks */; };
@@ -105,6 +108,9 @@
 		C66FEA28209EEC8200DAEF12 /* shooter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shooter.png; sourceTree = "<group>"; };
 		C66FEA2D209EF8A100DAEF12 /* AmmoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmmoManager.swift; sourceTree = "<group>"; };
 		C66FEA2F209F127700DAEF12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C676FCA020A998E300FA53E4 /* laserHead.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = laserHead.atlas; sourceTree = "<group>"; };
+		C676FCA220A9B5FA00FA53E4 /* bullet2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet2.png; sourceTree = "<group>"; };
+		C676FCA420A9B73D00FA53E4 /* SKAction+Chainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SKAction+Chainable.swift"; path = "../../../../ChainableAction/ActionChainingTest/SKAction+Chainable.swift"; sourceTree = "<group>"; };
 		C6F3306720A828C200A6B96F /* LaserSpark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LaserSpark.sks; sourceTree = "<group>"; };
 		C6F3306920A83E4000A6B96F /* WingmanThrust.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = WingmanThrust.sks; sourceTree = "<group>"; };
 		C6F3306B20A8449100A6B96F /* LaserThrust.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LaserThrust.sks; sourceTree = "<group>"; };
@@ -136,9 +142,9 @@
 			isa = PBXGroup;
 			children = (
 				C65E7F7120A7BB7100231EF0 /* SKTUtils */,
+				C643849920A1AF7D0008DACE /* TextureManager.swift */,
 				C65E7F8E20A7DC9E00231EF0 /* WeaponSystemManager.swift */,
 				C66FEA2D209EF8A100DAEF12 /* AmmoManager.swift */,
-				C643849920A1AF7D0008DACE /* TextureManager.swift */,
 				C61D4135209DF6B6000636FB /* SKNodeExtension.swift */,
 				C65E7F9420A7FE9000231EF0 /* CollisionHandler.swift */,
 				C6F3306F20A84F0B00A6B96F /* ExplosionAnimator.swift */,
@@ -210,6 +216,7 @@
 		C65E7F7120A7BB7100231EF0 /* SKTUtils */ = {
 			isa = PBXGroup;
 			children = (
+				C676FCA420A9B73D00FA53E4 /* SKAction+Chainable.swift */,
 				C65E7F7220A7BB7100231EF0 /* CGFloat+Extensions.swift */,
 				C65E7F7320A7BB7100231EF0 /* CGPoint+Extensions.swift */,
 				C65E7F7420A7BB7100231EF0 /* CGVector+Extensions.swift */,
@@ -230,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				C64384A120A1E1AD0008DACE /* Particles */,
+				C676FCA020A998E300FA53E4 /* laserHead.atlas */,
 				C6F3306D20A84E7200A6B96F /* explosion1.atlas */,
 				C643849D20A1D3590008DACE /* laserHitSpark.atlas */,
 				C643849720A1ACC30008DACE /* shootSpark.atlas */,
@@ -237,6 +245,7 @@
 				C643849F20A1D3660008DACE /* laserHead.png */,
 				C656A35A209D6F95007DD8DE /* Spaceship.jpg */,
 				C66FEA27209EEC8200DAEF12 /* bullet.png */,
+				C676FCA220A9B5FA00FA53E4 /* bullet2.png */,
 				C66FEA28209EEC8200DAEF12 /* shooter.png */,
 				C6229BC720A066CF000587B6 /* laser.png */,
 				C66FEA26209EEC8200DAEF12 /* wingman.png */,
@@ -304,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6229BC820A066D2000587B6 /* laser.png in Resources */,
+				C676FCA320A9B5FB00FA53E4 /* bullet2.png in Resources */,
 				C64384AB20A1F0D70008DACE /* ShootHitSpark.sks in Resources */,
 				C6F3306A20A83E4000A6B96F /* WingmanThrust.sks in Resources */,
 				C64384A020A1D3680008DACE /* laserHead.png in Resources */,
@@ -314,6 +324,7 @@
 				C656A34E209D6B7A007DD8DE /* Main.storyboard in Resources */,
 				C66FEA2A209EEC9B00DAEF12 /* shooter.png in Resources */,
 				C66FEA29209EEC9B00DAEF12 /* bullet.png in Resources */,
+				C676FCA120A998E800FA53E4 /* laserHead.atlas in Resources */,
 				C6F3306E20A84E7800A6B96F /* explosion1.atlas in Resources */,
 				C643849E20A1D35B0008DACE /* laserHitSpark.atlas in Resources */,
 				C656A350209D6B7A007DD8DE /* Assets.xcassets in Resources */,
@@ -362,6 +373,7 @@
 				C65E7F8820A7BB7900231EF0 /* SKTTimingFunctions.swift in Sources */,
 				C65E7F8D20A7CE1200231EF0 /* LaserSystem.swift in Sources */,
 				C656A343209D6B7A007DD8DE /* AppDelegate.swift in Sources */,
+				C676FCA520A9B73D00FA53E4 /* SKAction+Chainable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

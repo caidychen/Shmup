@@ -77,14 +77,18 @@ class ShotSystem: FrameUpdateProtocol {
         parentScene.addChild(bullet)
         let vector = CGVector(dx: -tan(bullet.zRotation) * range, dy: range)
         let shootAction = SKAction.move(by: vector, duration: bulletTravelDuration)
-        let scaleAction = SKAction.scaleX(to: 3.0, y: 8.0, duration: bulletTravelDuration)
+        let scaleAction = SKAction.scaleX(to: 1.5, y: 8.0, duration: bulletTravelDuration)
         let removeAction = SKAction.removeFromParent()
-        let sequence = SKAction.sequence([shootAction, removeAction])
-        bullet.run(scaleAction)
-        bullet.run(sequence) {
-            bullet.setScale(1.0)
-            AmmoManager.shared.magazine.append(bullet)
-        }
+        SKChainableAction(bullet)
+            .run(shootAction)
+            .run(removeAction)
+            .startWithCompletion { (node) in
+            node.setScale(1.0)
+                AmmoManager.shared.magazine.append(node)
+            }
+        SKChainableAction(bullet)
+            .run(scaleAction)
+            .start()
     }
 
 }
