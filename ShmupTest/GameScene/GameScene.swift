@@ -95,17 +95,17 @@ extension GameScene: SKPhysicsContactDelegate {
         let firstBody = contact.bodyA
         let secondBody = contact.bodyB
         if firstBody.categoryBitMask == Constants.Collision.enemyHitCategory && secondBody.categoryBitMask == Constants.Collision.playerBulletHitCategory {
-            let enemy = firstBody.node as! EWKEnemy
+            guard let enemy = firstBody.node as? EWKEnemy else {return}
             enemy.takeHit(damage: ship.shotPower)
-            let playerBullet = secondBody.node as! SKSpriteNode
+            guard let playerBullet = secondBody.node as? SKSpriteNode else {return}
             playerBullet.removeAllActions()
             playerBullet.removeFromParent()
      
         } else if firstBody.categoryBitMask == Constants.Collision.playerBulletHitCategory && secondBody.categoryBitMask == Constants.Collision.enemyHitCategory {
   
-            let enemy = secondBody.node as! EWKEnemy
+            guard let enemy = secondBody.node as? EWKEnemy else {return}
             enemy.takeHit(damage: ship.shotPower)
-            let playerBullet = firstBody.node as! SKSpriteNode
+            guard let playerBullet = firstBody.node as? SKSpriteNode else {return}
             playerBullet.removeAllActions()
             playerBullet.removeFromParent()
     

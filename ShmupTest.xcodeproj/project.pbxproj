@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BBA15BFC229381ED00B6F3CF /* SKAction+Chainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA15BFB229381ED00B6F3CF /* SKAction+Chainable.swift */; };
 		C61D4132209DE781000636FB /* Wingman.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61D4131209DE781000636FB /* Wingman.swift */; };
 		C61D4136209DF6B6000636FB /* SKNodeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61D4135209DF6B6000636FB /* SKNodeExtension.swift */; };
 		C6229BC820A066D2000587B6 /* laser.png in Resources */ = {isa = PBXBuildFile; fileRef = C6229BC720A066CF000587B6 /* laser.png */; };
@@ -53,7 +54,6 @@
 		C66FEA30209F127700DAEF12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66FEA2F209F127700DAEF12 /* Constants.swift */; };
 		C676FCA120A998E800FA53E4 /* laserHead.atlas in Resources */ = {isa = PBXBuildFile; fileRef = C676FCA020A998E300FA53E4 /* laserHead.atlas */; };
 		C676FCA320A9B5FB00FA53E4 /* bullet2.png in Resources */ = {isa = PBXBuildFile; fileRef = C676FCA220A9B5FA00FA53E4 /* bullet2.png */; };
-		C676FCA520A9B73D00FA53E4 /* SKAction+Chainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676FCA420A9B73D00FA53E4 /* SKAction+Chainable.swift */; };
 		C6F3306820A828C200A6B96F /* LaserSpark.sks in Resources */ = {isa = PBXBuildFile; fileRef = C6F3306720A828C200A6B96F /* LaserSpark.sks */; };
 		C6F3306A20A83E4000A6B96F /* WingmanThrust.sks in Resources */ = {isa = PBXBuildFile; fileRef = C6F3306920A83E4000A6B96F /* WingmanThrust.sks */; };
 		C6F3306C20A8449100A6B96F /* LaserThrust.sks in Resources */ = {isa = PBXBuildFile; fileRef = C6F3306B20A8449100A6B96F /* LaserThrust.sks */; };
@@ -62,6 +62,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BBA15BFB229381ED00B6F3CF /* SKAction+Chainable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKAction+Chainable.swift"; sourceTree = "<group>"; };
 		C61D4131209DE781000636FB /* Wingman.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wingman.swift; sourceTree = "<group>"; };
 		C61D4135209DF6B6000636FB /* SKNodeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNodeExtension.swift; sourceTree = "<group>"; };
 		C6229BC720A066CF000587B6 /* laser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laser.png; sourceTree = "<group>"; };
@@ -110,7 +111,6 @@
 		C66FEA2F209F127700DAEF12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C676FCA020A998E300FA53E4 /* laserHead.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = laserHead.atlas; sourceTree = "<group>"; };
 		C676FCA220A9B5FA00FA53E4 /* bullet2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet2.png; sourceTree = "<group>"; };
-		C676FCA420A9B73D00FA53E4 /* SKAction+Chainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SKAction+Chainable.swift"; path = "../../../../ChainableAction/ActionChainingTest/SKAction+Chainable.swift"; sourceTree = "<group>"; };
 		C6F3306720A828C200A6B96F /* LaserSpark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LaserSpark.sks; sourceTree = "<group>"; };
 		C6F3306920A83E4000A6B96F /* WingmanThrust.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = WingmanThrust.sks; sourceTree = "<group>"; };
 		C6F3306B20A8449100A6B96F /* LaserThrust.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LaserThrust.sks; sourceTree = "<group>"; };
@@ -216,7 +216,7 @@
 		C65E7F7120A7BB7100231EF0 /* SKTUtils */ = {
 			isa = PBXGroup;
 			children = (
-				C676FCA420A9B73D00FA53E4 /* SKAction+Chainable.swift */,
+				BBA15BFB229381ED00B6F3CF /* SKAction+Chainable.swift */,
 				C65E7F7220A7BB7100231EF0 /* CGFloat+Extensions.swift */,
 				C65E7F7320A7BB7100231EF0 /* CGPoint+Extensions.swift */,
 				C65E7F7420A7BB7100231EF0 /* CGVector+Extensions.swift */,
@@ -360,6 +360,7 @@
 				C61D4136209DF6B6000636FB /* SKNodeExtension.swift in Sources */,
 				C65E7F8220A7BB7900231EF0 /* SKAction+Extensions.swift in Sources */,
 				C65E7F9320A7E83E00231EF0 /* FrameUpdateProtocol.swift in Sources */,
+				BBA15BFC229381ED00B6F3CF /* SKAction+Chainable.swift in Sources */,
 				C65E7F8920A7BB7900231EF0 /* Vector3.swift in Sources */,
 				C656A35D209D83AA007DD8DE /* Ship.swift in Sources */,
 				C65E7F8720A7BB7900231EF0 /* SKTEffects.swift in Sources */,
@@ -373,7 +374,6 @@
 				C65E7F8820A7BB7900231EF0 /* SKTTimingFunctions.swift in Sources */,
 				C65E7F8D20A7CE1200231EF0 /* LaserSystem.swift in Sources */,
 				C656A343209D6B7A007DD8DE /* AppDelegate.swift in Sources */,
-				C676FCA520A9B73D00FA53E4 /* SKAction+Chainable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,7 +511,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2UEMNRA856;
+				DEVELOPMENT_TEAM = PNNZ28CF5V;
 				INFOPLIST_FILE = ShmupTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kdchen.ShmupTest;
@@ -526,7 +526,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2UEMNRA856;
+				DEVELOPMENT_TEAM = PNNZ28CF5V;
 				INFOPLIST_FILE = ShmupTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kdchen.ShmupTest;
